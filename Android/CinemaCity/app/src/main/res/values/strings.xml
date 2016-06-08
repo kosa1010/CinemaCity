@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Cinema City</string>
+    <string name="title_activity_login">Zaloguj</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Hasło</string>
+    <string name="prompt_confirm_password">Potwierdź hasło</string>
+    <string name="action_sign_in">Zaloguj</string>
+    <string name="action_register">Zarejestruj</string>
+    <string name="action_sign_in_short">Zaloguj się</string>
+    <string name="error_invalid_email">Email jest nie poprawny</string>
+    <string name="error_invalid_password">Hasło jest za krótkie</string>
+    <string name="error_pass_not_the_same">Różne hasła</string>
+    <string name="error_incorrect_password">Hasło błędne</string>
+    <string name="error_field_required">To pole jest obowiązkowe</string>
+    <string name="permission_rationale">"Znów nie udało się."
+    </string>
+    <string name="title_activity_activityegister">Zarejestruj</string>
+</resources>
