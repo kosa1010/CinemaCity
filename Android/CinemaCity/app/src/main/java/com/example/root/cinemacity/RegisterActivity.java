@@ -3,6 +3,7 @@ package com.example.root.cinemacity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,6 +20,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.root.cinamacityapp.UserMainAcrivity;
 
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -40,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    public static final String URL = "http://192.168.1.137:8080";
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -56,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordView2;
+    private EditText mLoginView;
 
     private View mProgressView;
     private View mLoginFormView;
@@ -68,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-
+        mLoginView = (EditText) findViewById(R.id.txtName);
         mPasswordView = (EditText) findViewById(R.id.password);
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -197,8 +202,9 @@ public class RegisterActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
+            //showProgress(true);
             addUserActivv();
+           //TODO: Dodac przeniesienie do aktywnosci z zalogowanym userem
         }
     }
 
@@ -323,28 +329,42 @@ public class RegisterActivity extends AppCompatActivity {
     public void addUserActivv() {
         //DownloadAllUserTask daut = new DownloadAllUserTask().execute();
         new HttpRequestTask().execute();
-        Toast.makeText(this, "Dodano kino", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Dodano użytkownika", Toast.LENGTH_SHORT).show();
     }
 
     private class HttpRequestTask extends AsyncTask<Users, Void, Void> {
 
-            Users user = new Users(mEmailView.getText().toString(), mPasswordView.getText().toString());
+            Users user = new Users(mLoginView.getText().toString(),
+                    mEmailView.getText().toString(),
+                    mPasswordView.getText().toString());
 
             @Override
             protected Void doInBackground(Users... params) {
-                String request = "http://192.168.1.137:8080/rest/user/add";
+                String request = URL+"/rest/user/add";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
                 HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("name", user.getName());
                 params2.put("email", user.getEmail());
                 params2.put("password", user.getPassword());
                 restTemplate.postForObject(request, user, user.getClass(), params2);
+
+                String query = RegisterActivity.URL+"/rest/user/"+user.getName();
+                restTemplate = new RestTemplate(true);
+                Users user2 = restTemplate.getForObject(query, Users.class);
+
+                if(!user2.getName().isEmpty()) {
+                    Intent intentMain = new Intent(RegisterActivity.this,
+                            UserMainAcrivity.class);
+                    intentMain.putExtra("users", user);
+                    RegisterActivity.this.startActivity(intentMain);
+                }
                 return null;
             }
 
 
-//            @Override
+//        //    @Override
 //        protected void onPostExecute(final Boolean success) {
 //            //mAuthTask = null;
 //            showProgress(false);
@@ -359,13 +379,13 @@ public class RegisterActivity extends AppCompatActivity {
 //            }
 //        }
 
-//        @Override
-//        protected void onCancelled() {
-//            //mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
+        @Override
+        protected void onCancelled() {
+            //mAuthTask = null;
+            showProgress(false);
+        }
+    }
 
 
-}}
+}
 

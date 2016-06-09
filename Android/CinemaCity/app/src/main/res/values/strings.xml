@@ -5,6 +5,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Hasło</string>
+    <string name="user_name">Login</string>
     <string name="prompt_confirm_password">Potwierdź hasło</string>
     <string name="action_sign_in">Zaloguj</string>
     <string name="action_register">Zarejestruj</string>
@@ -17,4 +18,10 @@
     <string name="permission_rationale">"Znów nie udało się."
     </string>
     <string name="title_activity_activityegister">Zarejestruj</string>
+    <string name="title_activity_user_main_acrivity">User</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
