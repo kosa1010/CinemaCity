@@ -1,8 +1,9 @@
 package com.example.root.cinamacityapp;
 
-import android.content.ClipData;
-import android.content.Intent;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,14 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.root.cinemacity.LoginActivity;
-import com.example.root.cinemacity.MainActivity;
 import com.example.root.cinemacity.R;
 
 import models.Users;
@@ -31,6 +28,8 @@ public class UserMainAcrivity extends AppCompatActivity
     private Users user;
     private TextView textView2;
     private DrawerLayout mDrawer;
+    private Boolean exit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +41,6 @@ public class UserMainAcrivity extends AppCompatActivity
         textView2 = (TextView) findViewById(R.id.textView2);
         textView2.setText(user.getName());
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -79,11 +77,25 @@ public class UserMainAcrivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+        if (exit) {
+            finish(); // finish activity
         } else {
-            super.onBackPressed();
+            Toast.makeText(this, "Wciśnij wstecz aby wyjść.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    System.exit(0);
+                }
+            }, 3 * 1000);
+
         }
     }
 
@@ -111,8 +123,16 @@ public class UserMainAcrivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            FragmentManager fragmentM = getFragmentManager();
+            FragmentTransaction ft = fragmentM.beginTransaction();
+            RelativeLayout rl = (RelativeLayout) findViewById(R.id.rlUP);
+            rl.setVisibility(View.INVISIBLE);
+            RelativeLayout rl2 = (RelativeLayout) findViewById(R.id.rlDown);
+            rl2.setVisibility(View.VISIBLE);
+//            ft.replace(R.id.layoutMain, new TestFragment()).commit();
+//            rl.setVisibility(View.INVISIBLE);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
