@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -145,7 +148,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -191,7 +193,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //showProgress(true);
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
-            new HttpRequestTask().execute();
+            try {
+                new HttpRequestTask().execute();
+            } catch (Exception ex) {
+                System.out.println("Obsluzyc blad HTTP NOT FOUND 404");
+            }
+
         }
     }
 
@@ -202,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 1;
     }
 
     /**
@@ -303,19 +310,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            String request = RegisterActivity.URL + "/rest/user/" + login;
-            RestTemplate restTemplate = new RestTemplate(true);
-            Users user = restTemplate.getForObject(request, Users.class);
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                String request = RegisterActivity.URL + "/rest/user/" + login;
+                try{
+                    RestTemplate restTemplate = new RestTemplate(true);
+                    Users user = restTemplate.getForObject(request, Users.class);
+                    if (user != null) {
+                        if (login.equals(user.getName())) {
 
-            if (login.equals(user.getName())) {
+                            Intent intentMain = new Intent(LoginActivity.this,
+                                    CinemaActivity.class);                            //zmiana aktywności na inną
+                            intentMain.putExtra("users", user);
+                            LoginActivity.this.startActivity(intentMain);
+                        }
+                    }
+                }catch (Exception ex){
+                    //info dac zly login lub haslo
+                }
 
-                Intent intentMain = new Intent(LoginActivity.this,
-                        CinemaActivity.class);                            //zmiana aktywności na inną
-                intentMain.putExtra("users", user);
-                LoginActivity.this.startActivity(intentMain);
+            } else {
+                //wlacz ch.. wifi
             }
-            // TODO: register the new account here.
+
             return true;
         }
 
@@ -339,4 +358,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 }
-
