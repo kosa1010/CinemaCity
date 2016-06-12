@@ -30,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.springframework.web.client.RestTemplate;
 
@@ -314,21 +315,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isConnected()) {
-                String request = RegisterActivity.URL + "/rest/user/" + login;
-                try{
+
+                try {
+                    String request = RegisterActivity.URL + "/rest/user/" + login;
                     RestTemplate restTemplate = new RestTemplate(true);
                     Users user = restTemplate.getForObject(request, Users.class);
                     if (user != null) {
                         if (login.equals(user.getName())) {
 
                             Intent intentMain = new Intent(LoginActivity.this,
-                                    CinemaActivity.class);                            //zmiana aktywności na inną
+                                    MovieActivity.class);                            //zmiana aktywności na inną
                             intentMain.putExtra("users", user);
                             LoginActivity.this.startActivity(intentMain);
                         }
                     }
-                }catch (Exception ex){
-                    //info dac zly login lub haslo
+                } catch (Exception ex) {
+                    Toast.makeText(LoginActivity.this, "Błędny login lub hasło", Toast.LENGTH_SHORT).show();
                 }
 
             } else {

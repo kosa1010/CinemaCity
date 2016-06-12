@@ -3,22 +3,12 @@ package com.example.root.cinemacity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
-import com.example.root.cinemacity.R;
-import com.example.root.cinemacity.RegisterActivity;
-
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
+import get_data.GetCinemasFromRest;
 import models.Cinema;
 
 public class CinemaActivity extends AppCompatActivity {
@@ -44,10 +34,8 @@ public class CinemaActivity extends AppCompatActivity {
     }
 
     private void loadCinemasToView() {
-        //Odpalamy aplikacje webowa
-        //ipconfig i sprawdzamy swoj lokalny adres/ip
         textViewCinemas = (TextView) findViewById(R.id.tvCinemas);
-        DownloadAllCinemaFromRest downloadAllCinemaFromRest = new DownloadAllCinemaFromRest();
+        GetCinemasFromRest downloadAllCinemaFromRest = new GetCinemasFromRest();
         try {
             cinemas = downloadAllCinemaFromRest.execute(RegisterActivity.URL + "/rest/movie/all").get();
             textViewCinemas.setText("");
@@ -59,30 +47,6 @@ public class CinemaActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-    }
-
-    private class DownloadAllCinemaFromRest extends AsyncTask<String, Void, List<Cinema>> {
-        @Override
-        protected List<Cinema> doInBackground(String... urls) {
-
-            List<Cinema> cinemasList = null;
-            try {
-                final String url = RegisterActivity.URL + "/rest/cinema/all";
-                RestTemplate restTemplate = new RestTemplate(true);
-
-                Cinema[] list = restTemplate.getForObject(url, Cinema[].class);
-                cinemasList = Arrays.asList(list);
-
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-            return cinemasList;
-        }
-
-        @Override
-        protected void onPostExecute(List<Cinema> result) {
-
         }
     }
 }
