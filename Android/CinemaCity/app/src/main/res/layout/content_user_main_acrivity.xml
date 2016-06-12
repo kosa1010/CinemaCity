@@ -9,50 +9,56 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.root.cinamacityapp.UserMainAcrivity"
+    tools:context=".UserMainAcrivity"
     tools:showIn="@layout/app_bar_user_main_acrivity"
-    android:id="@+id/layoutMain"><!--tutaj podmieniać zawartość pod spodem-->
+    android:id="@+id/layoutMain"
+    android:touchscreenBlocksFocus="true"
+    android:background="#000000"><!--tutaj podmieniać zawartość pod spodem-->
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rlUP">
+        android:background="#000000">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView2"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@android:color/white" />
+        <!--<fragment android:name="fragments.TestFragment"-->
+            <!--android:id="@+id/headlines_fragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Up"
-            android:id="@+id/btnUP"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+        <!--<fragment android:name="fragments.SamplesFragment"-->
+            <!--android:id="@+id/article_fragment"-->
+            <!--android:layout_width="360dp"-->
+            <!--android:layout_height="match_parent" />-->
 
-    </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rlDown"
-        android:visibility="invisible"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/rlUP">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@mipmap/img2" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Down"
-            android:id="@+id/btnDown"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="122dp" />
-    </RelativeLayout>
+            <TextView
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textView2"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="#ffffff" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

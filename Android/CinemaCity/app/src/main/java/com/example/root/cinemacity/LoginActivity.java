@@ -27,13 +27,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.root.cinamacityapp.UserMainAcrivity;
 
 import org.springframework.web.client.RestTemplate;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private String login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -307,14 +304,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            String request = RegisterActivity.URL+"/rest/user/"+login;
+            String request = RegisterActivity.URL + "/rest/user/" + login;
             RestTemplate restTemplate = new RestTemplate(true);
             Users user = restTemplate.getForObject(request, Users.class);
 
-            if(login.equals(user.getName())){
+            if (login.equals(user.getName())) {
 
                 Intent intentMain = new Intent(LoginActivity.this,
-                        UserMainAcrivity.class);
+                        CinemaActivity.class);                            //zmiana aktywności na inną
                 intentMain.putExtra("users", user);
                 LoginActivity.this.startActivity(intentMain);
             }

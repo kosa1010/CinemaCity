@@ -7,14 +7,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.root.cinema.Login">
+    tools:context="com.example.root.cinemacity.CinemaActivity">
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/textViewCinemas"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="131dp" />
+        android:text="asdfghj" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textViewCinemas2"
+        android:layout_below="@+id/tvCinemas"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
